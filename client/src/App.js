@@ -20,7 +20,7 @@ function App() {
     //   </header>
     // </div>
     <>
-      <p>Hello World</p>
+      <p>Price Averager</p>
       <button>Click Me</button>
     </>
   );
