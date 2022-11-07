@@ -1,14 +1,14 @@
 const puppeteer = require("puppeteer");
 
-let averagePrice = 0;
-// let url = `https://www.amazon.com/s?k=${item}`;
-
 async function getAveragePrice(url) {
+    let averagePrice = 0;
 
-    const browser = await puppeteer.launch({ headless: false })
+    // Launch instance of Puppeteer, navigate to UR
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     await page.goto(url)
 
+    // Scrape prices located in HTML, convert to float, add to prices array
     const getPrices = await page.evaluate(() => {
         let prices = []
         const priceTags = document.querySelectorAll(".sg-row .a-carousel-card .a-price .a-offscreen")
@@ -19,6 +19,7 @@ async function getAveragePrice(url) {
             prices.push(priceFloat)
         })
 
+        // Calculate average of scraped prices
         let pricesSum = prices.reduce((price, sum) => {
             return sum + price
         })
@@ -27,12 +28,10 @@ async function getAveragePrice(url) {
 
         return averagePrice
     })
-    
-    console.log(getPrices)
     await browser.close()
-    return averagePrice
-}
 
-// getAveragePrice(url)
+    // console.log(getPrices)
+    return getPrices
+}
 
 module.exports = {getAveragePrice};
